@@ -1,0 +1,14 @@
+@back Location2
+@stop
+
+# SafeLocked
+Персонаж: Закрыто. Нужен ключ.
+@stop
+
+# SafeAlreadyOpened
+Персонаж: Сейф уже пуст, я всё забрал.
+@stop
+
+# SafeOpened
+Персонаж: Есть! Забрал предмет из сейфа.
+@stop
