@@ -1,87 +1,114 @@
+using System;
 using UnityEngine;
 using Naninovel;
 
 public class Main : MonoBehaviour
 {
-    private const string VarTalkedToNpc = "TalkedToNpc"; // CustomVariablesManager Naninovel
-    private const string VarSafeChecked = "SafeChecked"; // CustomVariablesManager Naninovel
-    private const string NpcFirstMeet = "NpcFirstMeet";
-    private const string NpcThanks = "NpcThanks";
-    private const string NpcHintKeyLocation = "NpcHintKeyLocation";
-    private const string NpcHowAreThings = "NpcHowAreThings";
-    private const string Location1 = "Location1";
-    private const string Location2 = "Location2";
-    private const string Location3 = "Location3";
-    private const string SafeAlreadyOpened = "SafeAlreadyOpened";
-    private const string SafeLocked = "SafeLocked";
-    private const string SafeOpened = "SafeOpened";
-    private const string KeyMinigameEntry = "KeyMinigameEntry";
-    private const string Key = "key";
-    private const string Item = "item";
-
-    //[SerializeField] private Camera UiCamera; // Naninovel runtime Camera
     [SerializeField] private UIController UIController;
     [SerializeField] private DisplayController displayController;
     
-    //private Camera UiCamera => GameObject.Find("UICamera")?.GetComponent<Camera>();
+    public event Action<GameState> OnGameStateChanged;
+    private Location currentLocation = Location.Main;
+    private GameState gameState;
     
     private InventoryService Inventory => Engine.GetService<InventoryService>();
     private ICustomVariableManager Variables => Engine.GetService<ICustomVariableManager>();
     private IScriptPlayer Player => Engine.GetService<IScriptPlayer>();
     
-    private bool HasTalkedToNpc => Variables.TryGetVariableValue(VarTalkedToNpc, out bool v) && v;
-    private bool HasCheckedSafe => Variables.TryGetVariableValue(VarSafeChecked, out bool v) && v;
-    private bool HasKey => Inventory.HasItem(Key);
-    private bool HasQuestItem => Inventory.HasItem(Item);
+    private bool HasTalkedToNpc => Variables.TryGetVariableValue(Consts.VarTalkedToNpc, out bool v) && v;
+    private bool HasCheckedSafe => Variables.TryGetVariableValue(Consts.VarSafeChecked, out bool v) && v;
+    private bool HasKey => Inventory.HasItem(Consts.Key);
+    private bool HasQuestItem => Inventory.HasItem(Consts.Item);
 
-    private void MarkTalkedToNpc() => Variables.SetVariableValue(VarTalkedToNpc, "true");
-    private void MarkSafeChecked() => Variables.SetVariableValue(VarSafeChecked, "true");
+    private void MarkTalkedToNpc() => Variables.SetVariableValue(Consts.VarTalkedToNpc, "true");
+    private void MarkSafeChecked() => Variables.SetVariableValue(Consts.VarSafeChecked, "true");
 
     public async void OnNpcClicked()
     {
         Camera UiCamera = GameObject.Find("UICamera")?.GetComponent<Camera>();
         if (UiCamera != null) UiCamera.enabled = true;
-        string label = !HasTalkedToNpc ? NpcFirstMeet
-            : HasQuestItem ? NpcThanks
-            : HasCheckedSafe ? NpcHintKeyLocation
-            : NpcHowAreThings;
+        string label = !HasTalkedToNpc ? Consts.NpcFirstMeet
+            : HasQuestItem ? Consts.NpcThanks
+            : HasCheckedSafe ? Consts.NpcHintKeyLocation
+            : Consts.NpcHowAreThings;
 
         if (!HasTalkedToNpc)
         {
             MarkTalkedToNpc();
         }
         displayController.ChangeVisability(false);
-        await Player.PreloadAndPlayAsync(Location1, label: label);
+        await Player.PreloadAndPlayAsync(Consts.Location1, label: label);
         displayController.ChangeVisability(true);
+        UpdateGameState();
     }
 
     public async void OnSafeClicked()
     {
         if (HasQuestItem)
         {
-            await Player.PreloadAndPlayAsync(Location2, label: SafeAlreadyOpened);
+            await Player.PreloadAndPlayAsync(Consts.Location2, label: Consts.SafeAlreadyOpened);
             return;
         }
 
         if (!HasKey)
         {
             MarkSafeChecked();
-            await Player.PreloadAndPlayAsync(Location2, label: SafeLocked);
+            await Player.PreloadAndPlayAsync(Consts.Location2, label: Consts.SafeLocked);
             return;
         }
 
-        Inventory.RemoveItem(Key);
-        Inventory.AddItem(Item);
-        await Player.PreloadAndPlayAsync(Location2, label: SafeOpened);
+        Inventory.RemoveItem(Consts.Key);
+        Inventory.AddItem(Consts.Item);
+        await Player.PreloadAndPlayAsync(Consts.Location2, label: Consts.SafeOpened);
+        UpdateGameState();
     }
 
     public async void OnKeyClicked()
     {
-        await Player.PreloadAndPlayAsync(Location3, label: KeyMinigameEntry);
+        await Player.PreloadAndPlayAsync(Consts.Location3, label: Consts.KeyMinigameEntry);
     }
 
     public void OnLocationButtonClicked(string locationScriptName)
     {
+        // Кнопки перемещения между локациями — просто переключение сценария/фона.
+        // Без указания label — скрипт проигрывается с самого начала (@back + проверка интро).
         Player.PreloadAndPlayAsync(locationScriptName).Forget();
+ 
+        if (Enum.TryParse(locationScriptName, out Location location))
+            SetCurrentLocation(location);
+    }
+
+    /// <summary>
+    /// Обновляет только состояние текущей локации (для UI-контроллеров вроде
+    /// LocationUIController), НЕ трогая воспроизведение скрипта. Безопасно
+    /// вызывать из команды (например, @showTitleMenu), которая сама
+    /// выполняется посреди другого проигрываемого скрипта — в отличие от
+    /// OnLocationButtonClicked, которая ещё и запускает PreloadAndPlayAsync.
+    /// </summary>
+    ///
+    
+    public void SetCurrentLocation(Location location)
+    {
+        if (currentLocation == location) return;
+        currentLocation = location;
+        UpdateGameState();
+    }
+
+    private void UpdateGameState()
+    {
+        gameState.Update(HasTalkedToNpc, HasCheckedSafe, currentLocation);
+        OnGameStateChanged?.Invoke(gameState);
+    }
+    
+    private void OnEnable()
+    {
+        gameState = new GameState(false, false, currentLocation);
+        UIController.Init(OnLocationButtonClicked, gameState);
+        OnGameStateChanged += UIController.Refresh;
+    }
+ 
+    private void OnDisable()
+    {
+        OnGameStateChanged -= UIController.Refresh;
     }
 }
