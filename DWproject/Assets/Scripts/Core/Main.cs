@@ -19,6 +19,12 @@ public class Main : MonoBehaviour
     private const string Key = "key";
     private const string Item = "item";
 
+    //[SerializeField] private Camera UiCamera; // Naninovel runtime Camera
+    [SerializeField] private UIController UIController;
+    [SerializeField] private DisplayController displayController;
+    
+    //private Camera UiCamera => GameObject.Find("UICamera")?.GetComponent<Camera>();
+    
     private InventoryService Inventory => Engine.GetService<InventoryService>();
     private ICustomVariableManager Variables => Engine.GetService<ICustomVariableManager>();
     private IScriptPlayer Player => Engine.GetService<IScriptPlayer>();
@@ -33,6 +39,8 @@ public class Main : MonoBehaviour
 
     public async void OnNpcClicked()
     {
+        Camera UiCamera = GameObject.Find("UICamera")?.GetComponent<Camera>();
+        if (UiCamera != null) UiCamera.enabled = true;
         string label = !HasTalkedToNpc ? NpcFirstMeet
             : HasQuestItem ? NpcThanks
             : HasCheckedSafe ? NpcHintKeyLocation
@@ -42,8 +50,9 @@ public class Main : MonoBehaviour
         {
             MarkTalkedToNpc();
         }
-        
+        displayController.ChangeVisability(false);
         await Player.PreloadAndPlayAsync(Location1, label: label);
+        displayController.ChangeVisability(true);
     }
 
     public async void OnSafeClicked()
