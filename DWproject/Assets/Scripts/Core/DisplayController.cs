@@ -1,11 +1,16 @@
 using UnityEngine;
 
-public class DisplayController: MonoBehaviour
+public class DisplayController : MonoBehaviour
 {
-        [SerializeField] private GameObject npc;
+    [SerializeField] private GameObject npc;
 
-        public void ChangeVisability(bool isVisible)
-        {
-                if (npc != null) npc.SetActive(isVisible);
-        }
+    public void ChangeVisibility(bool isVisible)
+    {
+        if (npc != null) npc.SetActive(isVisible);
+    }
+
+    public void Refresh(GameState state)
+    {
+        //ChangeVisibility(state.CurrentLocation == Location.Location1);
+    }
 }

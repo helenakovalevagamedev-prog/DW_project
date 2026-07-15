@@ -36,9 +36,9 @@ public class Main : MonoBehaviour
         {
             MarkTalkedToNpc();
         }
-        displayController.ChangeVisability(false);
+        displayController.ChangeVisibility(false);
         await Player.PreloadAndPlayAsync(Consts.Location1, label: label);
-        displayController.ChangeVisability(true);
+        //displayController.ChangeVisability(true);
         UpdateGameState();
     }
 
@@ -68,14 +68,27 @@ public class Main : MonoBehaviour
         await Player.PreloadAndPlayAsync(Consts.Location3, label: Consts.KeyMinigameEntry);
     }
 
-    public void OnLocationButtonClicked(string locationScriptName)
+    public void OnLocationButtonClicked(string buttonName)
     {
-        // Кнопки перемещения между локациями — просто переключение сценария/фона.
+        var newLocationScriptName = Consts.Location1;
+        if (buttonName == Consts.RightButton)
+        {
+            newLocationScriptName = currentLocation == Location.Location1 ? Consts.Location2 : Consts.Location1;
+        }
+
+        if (buttonName == Consts.LeftButton)
+        {
+            newLocationScriptName = currentLocation == Location.Location1 ? Consts.Location3 : Consts.Location1;
+        }
+        Debug.Log($"Current location {currentLocation}, button {buttonName}, newLocationScriptName {newLocationScriptName}");
         // Без указания label — скрипт проигрывается с самого начала (@back + проверка интро).
-        Player.PreloadAndPlayAsync(locationScriptName).Forget();
+        Player.PreloadAndPlayAsync(newLocationScriptName).Forget();
  
-        if (Enum.TryParse(locationScriptName, out Location location))
+        if (Enum.TryParse(newLocationScriptName, out Location location))
+        {
             SetCurrentLocation(location);
+            Debug.Log($"parsed location {location}");
+        }
     }
 
     /// <summary>
@@ -105,10 +118,12 @@ public class Main : MonoBehaviour
         gameState = new GameState(false, false, currentLocation);
         UIController.Init(OnLocationButtonClicked, gameState);
         OnGameStateChanged += UIController.Refresh;
+        OnGameStateChanged += displayController.Refresh;
     }
  
     private void OnDisable()
     {
         OnGameStateChanged -= UIController.Refresh;
+        OnGameStateChanged -= displayController.Refresh;
     }
 }
