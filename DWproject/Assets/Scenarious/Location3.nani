@@ -1,10 +1,6 @@
 @back Location3
 @stop
 
-# KeyAlreadyTaken
-Персонаж: Ключ уже у меня.
-@stop
-
 # KeyMinigameEntry
 @startMinigame result:MinigameWon
 @if {MinigameWon}

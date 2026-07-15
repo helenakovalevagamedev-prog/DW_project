@@ -1,28 +1,43 @@
 @back Location1
+@stop
 
 # NpcFirstMeet
-@char Layra
+@hideWorldCharacter
+@char Layra pos:85,-150 scale:0.65
 Layra: О, наконец-то кто-то пришёл!
 Layra: Мне очень нужна помощь — принеси мне, пожалуйста, предмет из сейфа.
-Layra: Сейф находится на соседней локации, а вот ключ от него, боюсь, придётся поискать.
+Layra: Сейф находится на соседней локации...
+@hide Layra
 @hideUI
+@showWorldCharacter
 @set TalkedToNpc=true
 @stop
 
 # NpcHowAreThings
-@char Layra
+@hideWorldCharacter
+@char Layra pos:85,-150 scale:0.65
 Layra: Как успехи? Уже нашёл сейф?
-@hideUI
+@hide Layra
+@hideUI 
+@showWorldCharacter
 @stop
 
 # NpcHintKeyLocation
-@char Layra
+@hideWorldCharacter
+@char Layra pos:85,-150 scale:0.65
 Layra: Сейф заперт? Кажется, я потеряла ключ где-то в лесу..
-@hideUI
+@hide Layra
+@hideUI 
+@showWorldCharacter
 @stop
 
 # NpcThanks
-@char Layra
+@hideWorldCharacter
+@char Layra pos:85,-150 scale:0.65
 Layra: О, мой любимый блокнот! Спасибо тебе огромное!
+@hide Layra
 @hideUI
+@showWorldCharacter
+@returnToTitle
+@title
 @stop
