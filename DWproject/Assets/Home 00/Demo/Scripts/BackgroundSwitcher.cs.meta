@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 8028b3a8934454649879dae504f20c5a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 338166
+  packageName: Anime Home (FREE) 6 4K Backgrounds
+  packageVersion: 1.0
+  assetPath: Assets/Home 00/Demo/Scripts/BackgroundSwitcher.cs
+  uploadId: 800410
