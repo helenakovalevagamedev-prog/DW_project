@@ -25,8 +25,6 @@ public class Main : MonoBehaviour
 
     public async void OnNpcClicked()
     {
-        Camera UiCamera = GameObject.Find("UICamera")?.GetComponent<Camera>();
-        if (UiCamera != null) UiCamera.enabled = true;
         string label = !HasTalkedToNpc ? Consts.NpcFirstMeet
             : HasQuestItem ? Consts.NpcThanks
             : HasCheckedSafe ? Consts.NpcHintKeyLocation
@@ -36,9 +34,8 @@ public class Main : MonoBehaviour
         {
             MarkTalkedToNpc();
         }
-        displayController.ChangeVisibility(false);
+        //displayController.ChangeVisibility(false);
         await Player.PreloadAndPlayAsync(Consts.Location1, label: label);
-        //displayController.ChangeVisability(true);
         UpdateGameState();
     }
 
@@ -66,9 +63,10 @@ public class Main : MonoBehaviour
     public async void OnKeyClicked()
     {
         await Player.PreloadAndPlayAsync(Consts.Location3, label: Consts.KeyMinigameEntry);
+        UpdateGameState();
     }
 
-    public void OnLocationButtonClicked(string buttonName)
+    private void OnLocationButtonClicked(string buttonName)
     {
         var newLocationScriptName = Consts.Location1;
         if (buttonName == Consts.RightButton)
@@ -80,25 +78,13 @@ public class Main : MonoBehaviour
         {
             newLocationScriptName = currentLocation == Location.Location1 ? Consts.Location3 : Consts.Location1;
         }
-        Debug.Log($"Current location {currentLocation}, button {buttonName}, newLocationScriptName {newLocationScriptName}");
-        // Без указания label — скрипт проигрывается с самого начала (@back + проверка интро).
         Player.PreloadAndPlayAsync(newLocationScriptName).Forget();
  
         if (Enum.TryParse(newLocationScriptName, out Location location))
         {
             SetCurrentLocation(location);
-            Debug.Log($"parsed location {location}");
         }
     }
-
-    /// <summary>
-    /// Обновляет только состояние текущей локации (для UI-контроллеров вроде
-    /// LocationUIController), НЕ трогая воспроизведение скрипта. Безопасно
-    /// вызывать из команды (например, @showTitleMenu), которая сама
-    /// выполняется посреди другого проигрываемого скрипта — в отличие от
-    /// OnLocationButtonClicked, которая ещё и запускает PreloadAndPlayAsync.
-    /// </summary>
-    ///
     
     public void SetCurrentLocation(Location location)
     {
@@ -119,6 +105,7 @@ public class Main : MonoBehaviour
         UIController.Init(OnLocationButtonClicked, gameState);
         OnGameStateChanged += UIController.Refresh;
         OnGameStateChanged += displayController.Refresh;
+        OnGameStateChanged?.Invoke(gameState);
     }
  
     private void OnDisable()

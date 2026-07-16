@@ -6,6 +6,9 @@ public class UIController: MonoBehaviour
 {
     [SerializeField] private Button leftLocationButton;
     [SerializeField] private Button rightLocationButton;
+    [SerializeField] private Image inventoryItem;
+    [SerializeField] private Sprite keySprite;
+    [SerializeField] private Sprite notebookSprite;
     
     private Func<Location> getLocation;
     
