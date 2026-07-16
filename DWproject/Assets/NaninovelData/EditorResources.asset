@@ -144,6 +144,9 @@ MonoBehaviour:
     - name: ScriptNavigatorUI
       pathPrefix: UI
       guid: 735d6aa767879aa469134858c5b2f0a7
+    - name: TicTacToeUI
+      pathPrefix: UI
+      guid: faa30877496f72c4eb67a2c7ae380ab9
   - Id: Scripts
     Resources:
     - name: TitleScript
@@ -155,11 +158,25 @@ MonoBehaviour:
     - name: Location_2
       pathPrefix: Scripts
       guid: 703d13d4a8399044f92e861ef6c52138
-    - name: Location_3
+    - name: Location3
       pathPrefix: Scripts
       guid: 5bbda829f803fd04eb49e975cd64f05f
   - Id: Characters/883a2101-894c-4b0f-8eae-f5324bca5b56
     Resources:
-    - name: NPC
+    - name: Layra
       pathPrefix: Characters
       guid: 0fbc394ebb8e089428fe9116a0be5d74
+  - Id: Backgrounds/a7a0f7e4-bd4b-4355-b61f-e62ea3062592
+    Resources:
+    - name: TitleBackground
+      pathPrefix: Backgrounds/MainBackground
+      guid: f466341fabbe0d3418f8f99fb8e91418
+    - name: Location1
+      pathPrefix: Backgrounds/MainBackground
+      guid: f466341fabbe0d3418f8f99fb8e91418
+    - name: Location2
+      pathPrefix: Backgrounds/MainBackground
+      guid: a7ea18ed742f0be4b9215f2a7f81dd31
+    - name: Location3
+      pathPrefix: Backgrounds/MainBackground
+      guid: 021d2d6042229fd40a6f6c3e2f115fbc
