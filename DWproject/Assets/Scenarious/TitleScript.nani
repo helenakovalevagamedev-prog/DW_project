@@ -1,5 +1,6 @@
-@back TitleBackground pos:50,50 scale:1
+@back TitleBackground pos:50,150 scale:1
 @stop
 
 # OnNewGame
 @startNewGame
+@stop
