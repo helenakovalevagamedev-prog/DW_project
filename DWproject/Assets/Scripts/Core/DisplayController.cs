@@ -4,6 +4,7 @@ public class DisplayController : MonoBehaviour
 {
     [SerializeField] private GameObject npc;
     [SerializeField] private GameObject key;
+    [SerializeField] private BoxCollider2D keyCollider;
     [SerializeField] private GameObject safe;
 
     private bool isLocationAllowsVisibleSafe = false;
@@ -26,6 +27,12 @@ public class DisplayController : MonoBehaviour
         isLocationAllowsVisibleSafe = state.CurrentLocation == Location.Location2;
         isLocationAllowsVisibleKey = state.CurrentLocation == Location.Location3;
         Apply();
+    }
+    
+    
+    public void SetKeyInteractable(bool isKeyInteractable)
+    {
+        keyCollider.enabled = isKeyInteractable;
     }
 
     private void Apply()
