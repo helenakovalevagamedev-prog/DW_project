@@ -21,6 +21,21 @@ public class UIController: MonoBehaviour
     
     public void Refresh(GameState state)
     {
+        ChangeLocationButtonsVisibility(state);
+        UpdateInventoryItemIcon(state.HasMinigameWinned, state.HasSafeOpened);
+    }
+
+    private void UpdateInventoryItemIcon(bool hasMinigameWinned, bool hasSafeOpened)
+    {
+        if(hasMinigameWinned)
+        {
+            inventoryItem.gameObject.SetActive(hasMinigameWinned);
+        }
+        inventoryItem.sprite = hasSafeOpened ? notebookSprite : keySprite;
+    }
+
+    private void ChangeLocationButtonsVisibility(GameState state)
+    {
         switch (state.CurrentLocation)
         {
             case Location.Location1:
