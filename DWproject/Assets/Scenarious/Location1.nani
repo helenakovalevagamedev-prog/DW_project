@@ -1,9 +1,10 @@
 @back Location1 pos:50,150 scale:1
+@hideUI
 @stop
 
 # NpcFirstMeet
-@hideWorldCharacter
 @char Layra pos:85,-150 scale:0.65
+@showUI
 Layra: О, наконец-то кто-то пришёл!
 Layra: Мне очень нужна помощь — принеси мне, пожалуйста, предмет из сейфа.
 Layra: Сейф находится на соседней локации...

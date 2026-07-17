@@ -2,13 +2,19 @@
 @stop
 
 # SafeLocked
+@showUI
 Персонаж: Закрыто. Нужен ключ.
+@hideUI
 @stop
 
 # SafeAlreadyOpened
+@showUI
 Персонаж: Сейф уже пуст, я всё забрал.
+@hideUI
 @stop
 
 # SafeOpened
+@showUI
 Персонаж: Есть! Забрал предмет из сейфа.
+@hideUI
 @stop

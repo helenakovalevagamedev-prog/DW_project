@@ -4,9 +4,13 @@
 # KeyMinigameEntry
 @startMinigame result:MinigameWon
 @if {MinigameWon}
+    @showUI
     Персонаж: Есть, ключ мой!
+    @hideUI
     @addItem id:key
 @else
+    @showUI
     Персонаж: Не получилось... Попробую ещё раз.
+    @hideUI
 @endif
 @stop

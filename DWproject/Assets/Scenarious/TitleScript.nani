@@ -3,4 +3,5 @@
 
 # OnNewGame
 @startNewGame
+@hideUI
 @stop
