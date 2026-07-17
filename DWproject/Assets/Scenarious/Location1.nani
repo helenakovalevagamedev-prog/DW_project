@@ -3,6 +3,7 @@
 @stop
 
 # NpcFirstMeet
+@hideArrows
 @char Layra pos:85,-150 scale:0.65
 @showUI
 Layra: О, наконец-то кто-то пришёл!
@@ -11,37 +12,44 @@ Layra: Сейф находится на соседней локации...
 @hide Layra
 @hideUI
 @showWorldCharacter
+@showArrows
 @set TalkedToNpc=true
 @stop
 
 # NpcHowAreThings
 @hideWorldCharacter
+@hideArrows
 @char Layra pos:85,-150 scale:0.65
 @showUI
 Layra: Как успехи? Уже нашёл сейф?
 @hide Layra
 @hideUI 
 @showWorldCharacter
+@showArrows
 @stop
 
 # NpcHintKeyLocation
 @hideWorldCharacter
+@hideArrows
 @char Layra pos:85,-150 scale:0.65
 @showUI
 Layra: Сейф заперт? Кажется, я потеряла ключ где-то в лесу..
 @hide Layra
 @hideUI 
 @showWorldCharacter
+@showArrows
 @stop
 
 # NpcThanks
 @hideWorldCharacter
+@hideArrows
 @char Layra pos:85,-150 scale:0.65
 @showUI
 Layra: О, мой любимый блокнот! Спасибо тебе огромное!
 @hide Layra
 @hideUI
 @showWorldCharacter
+@showArrows
 @returnToTitle
 @title
 @stop
