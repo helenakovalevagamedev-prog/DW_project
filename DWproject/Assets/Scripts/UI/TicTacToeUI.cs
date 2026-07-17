@@ -32,7 +32,7 @@ public class TicTacToeUI : CustomUI
 
     private void OnCellClicked(int cellIndex)
     {
-        minigame.TryPlayerMove(cellIndex);
+        minigame.MakePlayerMove(cellIndex);
     }
 
     private void RenderBoard(int[] board)
