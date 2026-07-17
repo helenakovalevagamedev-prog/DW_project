@@ -33,8 +33,8 @@ public class DisplayController : MonoBehaviour
         if (npc != null)
         {
             npc.SetActive(isLocationAllowsVisibleNPC && !isHiddenByDialogueNPC);
-            safe.SetActive(isLocationAllowsVisibleSafe);
-            key.SetActive(isLocationAllowsVisibleKey);
         }
+        safe.SetActive(isLocationAllowsVisibleSafe);
+        key.SetActive(isLocationAllowsVisibleKey);
     }
 }
