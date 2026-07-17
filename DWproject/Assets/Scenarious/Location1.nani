@@ -1,11 +1,13 @@
 @back Location1 pos:50,150 scale:1
 @hideUI
+@showWorldCharacter
 @stop
 
 # NpcFirstMeet
 @hideArrows
 @char Layra pos:85,-150 scale:0.65
 @showUI
+@hideWorldCharacter
 Layra: О, наконец-то кто-то пришёл!
 Layra: Мне очень нужна помощь — принеси мне, пожалуйста, предмет из сейфа.
 Layra: Сейф находится на соседней локации...
@@ -50,6 +52,4 @@ Layra: О, мой любимый блокнот! Спасибо тебе огр�
 @hideUI
 @showWorldCharacter
 @showArrows
-@returnToTitle
-@title
 @stop
