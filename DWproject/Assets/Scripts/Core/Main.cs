@@ -66,6 +66,7 @@ public class Main : MonoBehaviour
         Debug.Log($"await");
         await Player.PreloadAndPlayAsync(Consts.Location2, label: Consts.SafeOpened);
         Debug.Log($"update state");
+        hasSafeOpened = true;
         UpdateGameState();
     }
 

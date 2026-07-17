@@ -39,7 +39,7 @@ public class UIController: MonoBehaviour
     {
         if(hasMinigameWinned)
         {
-            inventoryItem.gameObject.SetActive(hasMinigameWinned);
+            inventoryItem.enabled = hasMinigameWinned;
         }
         inventoryItem.sprite = hasSafeOpened ? notebookSprite : keySprite;
     }
