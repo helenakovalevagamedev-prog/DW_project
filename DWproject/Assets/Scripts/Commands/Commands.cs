@@ -66,18 +66,6 @@ public class StartNewGameCommand : Command
         return UniTask.CompletedTask;
     }
 }
-
- [CommandAlias ("returnToTitle")]
- public class ReturnToTitleCommand : Command
- {
-     public override UniTask ExecuteAsync(AsyncToken asyncToken = default)
-     {
-         var main = Object.FindObjectOfType<Main>();
-         if (main != null) main.SetCurrentLocation(Location.Main);
- 
-         return UniTask.CompletedTask;
-     }
- }
  
  [CommandAlias("hideWorldCharacter")]
  public class HideWorldCharacterCommand : Command
