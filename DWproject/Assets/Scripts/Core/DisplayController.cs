@@ -26,6 +26,7 @@ public class DisplayController : MonoBehaviour
         isLocationAllowsVisibleNPC = state.CurrentLocation == Location.Location1;
         isLocationAllowsVisibleSafe = state.CurrentLocation == Location.Location2;
         isLocationAllowsVisibleKey = state.CurrentLocation == Location.Location3;
+        isHiddenKey = state.HasMinigameWinned;
         Apply();
     }
     
@@ -42,6 +43,6 @@ public class DisplayController : MonoBehaviour
             npc.SetActive(isLocationAllowsVisibleNPC && !isHiddenByDialogueNPC);
         }
         safe.SetActive(isLocationAllowsVisibleSafe);
-        key.SetActive(isLocationAllowsVisibleKey);
+        key.SetActive(isLocationAllowsVisibleKey && !isHiddenKey);
     }
 }
