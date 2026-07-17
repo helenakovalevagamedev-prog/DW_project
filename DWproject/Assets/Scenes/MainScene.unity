@@ -610,6 +610,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DisplayController
   npc: {fileID: 730057381}
   key: {fileID: 1702898091}
+  keyCollider: {fileID: 1702898092}
   safe: {fileID: 158684997}
 --- !u!1 &1652693563
 GameObject:

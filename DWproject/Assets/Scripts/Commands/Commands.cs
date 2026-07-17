@@ -39,16 +39,15 @@ public class StartMinigameCommand : Command
         var ticTacToeUI = Engine.GetService<IUIManager>().GetUI<TicTacToeUI>();
         await ticTacToeUI.ChangeVisibilityAsync(true);
         minigame.StartNewGame();
-        // проверка токен на случай сброса/уничтожения движка.
         while (minigame.GameActive)
         {
             asyncToken.ThrowIfCanceled();
             await UniTask.Yield();
         }
         await ticTacToeUI.ChangeVisibilityAsync(false);
-        bool playerWon = minigame.Result == TicTacToeService.GameResult.PlayerWon;
+        bool playerWon = minigame.Result == GameResult.PlayerWon;
         Engine.GetService<ICustomVariableManager>()
-            .SetVariableValue(ResultVariableName, playerWon.ToString());
+            .SetVariableValue(ResultVariableName, playerWon ? "1" : "0");
     }
 }
 
@@ -98,6 +97,50 @@ public class StartNewGameCommand : Command
      {
          var display = Object.FindObjectOfType<DisplayController>();
          if (display != null) display.ChangeVisibility(true);
+         return UniTask.CompletedTask;
+     }
+ }
+ 
+ [CommandAlias("hideArrows")]
+ public class HideArrowsCommand : Command
+ {
+     public override UniTask ExecuteAsync(AsyncToken asyncToken = default)
+     {
+         var ui = Object.FindObjectOfType<UIController>();
+         if (ui != null) ui.ChangeLocationButtonsDuringDialogue(true);
+         return UniTask.CompletedTask;
+     }
+ }
+ 
+ [CommandAlias("showArrows")]
+ public class ShowArrowsCommand : Command
+ {
+     public override UniTask ExecuteAsync(AsyncToken asyncToken = default)
+     {
+         var ui = Object.FindObjectOfType<UIController>();
+         if (ui != null) ui.ChangeLocationButtonsDuringDialogue(false);
+         return UniTask.CompletedTask;
+     }
+ }
+ 
+ [CommandAlias("disableKey")]
+ public class DisableKeyCommand : Command
+ {
+     public override UniTask ExecuteAsync(AsyncToken asyncToken = default)
+     {
+         var display = Object.FindObjectOfType<DisplayController>();
+         if (display != null) display.SetKeyInteractable(false);
+         return UniTask.CompletedTask;
+     }
+ }
+ 
+ [CommandAlias("enableKey")]
+ public class EnableKeyCommand : Command
+ {
+     public override UniTask ExecuteAsync(AsyncToken asyncToken = default)
+     {
+         var display = Object.FindObjectOfType<DisplayController>();
+         if (display != null) display.SetKeyInteractable(true);
          return UniTask.CompletedTask;
      }
  }

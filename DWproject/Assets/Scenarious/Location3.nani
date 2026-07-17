@@ -2,8 +2,10 @@
 @stop
 
 # KeyMinigameEntry
+@disableKey
+@hideArrows
 @startMinigame result:MinigameWon
-@if {MinigameWon}
+@if MinigameWon == 1
     @showUI
     Персонаж: Есть, ключ мой!
     @hideUI
@@ -12,5 +14,7 @@
     @showUI
     Персонаж: Не получилось... Попробую ещё раз.
     @hideUI
+    @enableKey
 @endif
+@showArrows
 @stop
