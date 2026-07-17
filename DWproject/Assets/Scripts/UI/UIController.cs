@@ -11,6 +11,8 @@ public class UIController: MonoBehaviour
     [SerializeField] private Sprite notebookSprite;
     
     private Func<Location> getLocation;
+    private GameState lastState;
+    private bool isHiddenByDialogue;
     
     public void Init(Action<string> onLocationButtonClicked, GameState state)
     {
@@ -21,8 +23,16 @@ public class UIController: MonoBehaviour
     
     public void Refresh(GameState state)
     {
-        ChangeLocationButtonsVisibility(state);
+        lastState = state;
+        ChangeLocationButtonsVisibility();
         UpdateInventoryItemIcon(state.HasMinigameWinned, state.HasSafeOpened);
+    }
+    
+    // for commands
+    public void ChangeLocationButtonsDuringDialogue(bool hidden)
+    {
+        isHiddenByDialogue = hidden;
+        ChangeLocationButtonsVisibility();
     }
 
     private void UpdateInventoryItemIcon(bool hasMinigameWinned, bool hasSafeOpened)
@@ -34,27 +44,35 @@ public class UIController: MonoBehaviour
         inventoryItem.sprite = hasSafeOpened ? notebookSprite : keySprite;
     }
 
-    private void ChangeLocationButtonsVisibility(GameState state)
+    private void ChangeLocationButtonsVisibility()
     {
-        switch (state.CurrentLocation)
+        bool leftAllowed;
+        bool rightAllowed;
+ 
+        switch (lastState.CurrentLocation)
         {
             case Location.Location1:
-                leftLocationButton.gameObject.SetActive(state.HasCheckedSafe);
-                rightLocationButton.gameObject.SetActive(state.HasTalkedToNpc);
+                rightAllowed = lastState.HasTalkedToNpc;
+                leftAllowed = lastState.HasCheckedSafe;
                 break;
+ 
             case Location.Location2:
-                leftLocationButton.gameObject.SetActive(true);
-                rightLocationButton.gameObject.SetActive(false);
+                leftAllowed = true;
+                rightAllowed = false;
                 break;
+ 
             case Location.Location3:
-                leftLocationButton.gameObject.SetActive(false);
-                rightLocationButton.gameObject.SetActive(true);
+                leftAllowed = false;
+                rightAllowed = true;
                 break;
-            case Location.Main:
-            default:
-                leftLocationButton.gameObject.SetActive(false);
-                rightLocationButton.gameObject.SetActive(false);
+ 
+            default: // Location.Main (титульный экран) и т.п.
+                leftAllowed = false;
+                rightAllowed = false;
                 break;
         }
+ 
+        leftLocationButton.gameObject.SetActive(leftAllowed && !isHiddenByDialogue);
+        rightLocationButton.gameObject.SetActive(rightAllowed && !isHiddenByDialogue);
     }
 }
