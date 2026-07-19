@@ -152,10 +152,10 @@ MonoBehaviour:
     - name: TitleScript
       pathPrefix: Scripts
       guid: a6daebe55309a4742b02aefc405d5b48
-    - name: Location_1
+    - name: Location1
       pathPrefix: Scripts
       guid: c98ae88bbb5c7a841b330cc606052594
-    - name: Location_2
+    - name: Location2
       pathPrefix: Scripts
       guid: 703d13d4a8399044f92e861ef6c52138
     - name: Location3

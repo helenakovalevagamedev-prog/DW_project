@@ -17,3 +17,5 @@ MonoBehaviour:
     value: false
   - name: SafeChecked
     value: false
+  - name: MinigameWon
+    value: 0
