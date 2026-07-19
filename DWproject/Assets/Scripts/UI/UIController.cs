@@ -25,7 +25,7 @@ public class UIController: MonoBehaviour
     {
         lastState = state;
         ChangeLocationButtonsVisibility();
-        UpdateInventoryItemIcon(state.HasMinigameWinned, state.HasSafeOpened);
+        UpdateInventoryItemIcon(state.HasMinigameWinned, state.HasSafeOpened, state.HasQuestCompleted);
     }
     
     // for commands
@@ -35,12 +35,9 @@ public class UIController: MonoBehaviour
         ChangeLocationButtonsVisibility();
     }
 
-    private void UpdateInventoryItemIcon(bool hasMinigameWinned, bool hasSafeOpened)
+    private void UpdateInventoryItemIcon(bool hasMinigameWinned, bool hasSafeOpened, bool hasQuestCompleted)
     {
-        if(hasMinigameWinned)
-        {
-            inventoryItem.enabled = hasMinigameWinned;
-        }
+        inventoryItem.enabled = hasMinigameWinned && !hasQuestCompleted;
         inventoryItem.sprite = hasSafeOpened ? notebookSprite : keySprite;
     }
 
@@ -66,7 +63,7 @@ public class UIController: MonoBehaviour
                 rightAllowed = true;
                 break;
  
-            default: // Location.Main (титульный экран) и т.п.
+            default:
                 leftAllowed = false;
                 rightAllowed = false;
                 break;

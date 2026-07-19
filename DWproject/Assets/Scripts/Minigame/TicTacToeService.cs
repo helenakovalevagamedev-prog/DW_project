@@ -19,12 +19,11 @@ public class TicTacToeService : IEngineService
         new[] {0,4,8}, new[] {2,4,6}
     };
 
-    private readonly int[] board = new int[9];
-    private readonly Random random = new();
+    private int[] board = new int[9];
+    private Random random = new();
     
     public bool GameActive { get; private set; }
     public GameResult Result { get; private set; } = GameResult.None;
-    public IReadOnlyList<int> Board => board;
     
     public void StartNewGame()
     {
@@ -65,7 +64,7 @@ public class TicTacToeService : IEngineService
             move = FindWinningMove(PlayerMark);
         }
 
-        move ??= FindFreeCell(4)                             // strict center check
+        move ??= FindCenterFreeCell(4)                       // strict center check
                  ?? FindFirstFreeAmong(0, 2, 6, 8) // strict corner check
                  ?? FindRandomFreeCell();
 
@@ -99,7 +98,7 @@ public class TicTacToeService : IEngineService
         return null;
     }
 
-    private int? FindFreeCell(int index) => board[index] == 0 ? index : null;
+    private int? FindCenterFreeCell(int index) => board[index] == 0 ? index : null;
 
     private int? FindFirstFreeAmong(params int[] candidates)
     {

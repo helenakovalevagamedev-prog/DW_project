@@ -13,6 +13,7 @@ public class Main : MonoBehaviour
     private TicTacToeService ticTacToe;
     private bool hasMinigameWinned;
     private bool hasSafeOpened;
+    private bool hasQuestCompleted;
     
     private InventoryService Inventory => Engine.GetService<InventoryService>();
     private ICustomVariableManager Variables => Engine.GetService<ICustomVariableManager>();
@@ -38,18 +39,17 @@ public class Main : MonoBehaviour
         {
             MarkTalkedToNpc();
         }
-        //displayController.ChangeVisibility(false);
+        hasQuestCompleted = HasQuestItem;
+        UpdateGameState();
         await Player.PreloadAndPlayAsync(Consts.Location1, label: label);
         UpdateGameState();
     }
 
     public async void OnSafeClicked()
     {
-        Debug.Log($"HasQuestItem {HasQuestItem}, HasKey {HasKey}");
         if (HasQuestItem)
         {
             await Player.PreloadAndPlayAsync(Consts.Location2, label: Consts.SafeAlreadyOpened);
-            Debug.Log($"HasQuestItem");
             return;
         }
 
@@ -57,15 +57,12 @@ public class Main : MonoBehaviour
         {
             MarkSafeChecked();
             await Player.PreloadAndPlayAsync(Consts.Location2, label: Consts.SafeLocked);
-            Debug.Log($"!HasKey ");
             return;
         }
 
         Inventory.RemoveItem(Consts.Key);
         Inventory.AddItem(Consts.Item);
-        Debug.Log($"await");
         await Player.PreloadAndPlayAsync(Consts.Location2, label: Consts.SafeOpened);
-        Debug.Log($"update state");
         hasSafeOpened = true;
         UpdateGameState();
     }
@@ -108,7 +105,7 @@ public class Main : MonoBehaviour
 
     private void UpdateGameState()
     {
-        gameState.Update(HasTalkedToNpc, HasCheckedSafe, currentLocation, hasMinigameWinned, hasSafeOpened);
+        gameState.Update(HasTalkedToNpc, HasCheckedSafe, currentLocation, hasMinigameWinned, hasSafeOpened, hasQuestCompleted);
         OnGameStateChanged?.Invoke(gameState);
     }
 
@@ -123,8 +120,9 @@ public class Main : MonoBehaviour
     
     private async void OnEnable()
     {
-        gameState = new GameState(false, false, currentLocation, false, false);
+        gameState = new GameState(false, false, currentLocation, false, false, false);
         UIController.Init(OnLocationButtonClicked, gameState);
+        displayController.Init(GetCurrentGameState);
         OnGameStateChanged += UIController.Refresh;
         OnGameStateChanged += displayController.Refresh;
         OnGameStateChanged?.Invoke(gameState);
@@ -149,5 +147,10 @@ public class Main : MonoBehaviour
         {
             ticTacToe.OnGameEnded -= HandleMinigameWinned;
         }
+    }
+
+    private GameState GetCurrentGameState()
+    {
+        return gameState;
     }
 }

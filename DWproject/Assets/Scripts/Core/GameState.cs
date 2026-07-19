@@ -8,6 +8,7 @@ public class GameState
     public bool HasCheckedSafe { get; private set; }
     public bool HasMinigameWinned { get; private set; }
     public bool HasSafeOpened { get; private set; }
+    public bool HasQuestCompleted { get; set; }
     public Location CurrentLocation { get; private set; }
 
     public GameState(
@@ -15,9 +16,10 @@ public class GameState
         bool hasCheckedSafe,
         Location currentLocation,
         bool hasMinigameWinned,
-        bool hasSafeOpened)
+        bool hasSafeOpened,
+        bool hasQuestCompleted)
     {
-        Update(hasTalkedToNpc, hasCheckedSafe, currentLocation, hasMinigameWinned, hasSafeOpened);
+        Update(hasTalkedToNpc, hasCheckedSafe, currentLocation, hasMinigameWinned, hasSafeOpened, hasQuestCompleted);
     }
 
     public void Update(
@@ -25,12 +27,14 @@ public class GameState
         bool hasCheckedSafe, 
         Location currentLocation, 
         bool hasMinigameWinned,
-        bool hasSafeOpened)
+        bool hasSafeOpened,
+        bool hasQuestCompleted)
     {
         HasTalkedToNpc = hasTalkedToNpc;
         HasCheckedSafe =  hasCheckedSafe;
         CurrentLocation = currentLocation;
         HasMinigameWinned = hasMinigameWinned;
         HasSafeOpened = hasSafeOpened;
+        HasQuestCompleted = hasQuestCompleted;
     }
 }
